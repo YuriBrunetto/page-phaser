@@ -12,7 +12,7 @@ Page.Init = function() {
 
     BasicGame.Boot.prototype = {
         preload: function(){
-            game.load.image("tile", "assets/tiles/tile.png");
+            game.load.spritesheet("tile", "assets/tiles/tiles.png", 128, 128, 18);
             game.time.advancedTiming = true;
 
             // add the isometric plugin
@@ -62,11 +62,11 @@ Page.Init = function() {
                 if (!tile.selected && inBounds) {
                     tile.selected = true;
                     tile.tint = 0x86bfda; // color
-                    game.add.tween(tile).to({ isoZ:4 }, 200, Phaser.Easing.Quadratic.InOut, true);
+                    // game.add.tween(tile).to({ isoZ:8 }, 200, Phaser.Easing.Quadratic.InOut, true);
                 } else if (tile.selected && !inBounds) {
                     tile.selected = false;
                     tile.tint = 0xffffff;
-                    game.add.tween(tile).to({ isoZ:0 }, 200, Phaser.Easing.Quadratic.InOut, true);
+                    // game.add.tween(tile).to({ isoZ:0 }, 200, Phaser.Easing.Quadratic.InOut, true);
                 }
             });
         },
@@ -75,9 +75,10 @@ Page.Init = function() {
             game.debug.text("fps: " + game.time.fps || "--", 2, 14, "#fff");
         },
         spawnTiles: function(){
-            var tile;
-            for (var xx = 0; xx < 480; xx += 38) {
-                for (var yy = 0; yy < 480; yy += 38) {
+            var tile,
+                separation = 70;
+            for (var xx = 0; xx < 480; xx += separation) {
+                for (var yy = 0; yy < 480; yy += separation) {
                     tile = game.add.isoSprite(xx, yy, 0, "tile", 0, isoGroup);
                     tile.anchor.setTo(0.5, 0);
                 }
