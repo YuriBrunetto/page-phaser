@@ -8,7 +8,13 @@ Page.Init = function() {
     var BasicGame = function(game){ };
     BasicGame.Boot = function(game){ };
 
-    var isoGroup, cursorPos, cursor, cursors;
+    // isometric
+    var isoGroup, cursorPos;
+    // cursors (mouse and keyboard)
+    var cursor, cursors;
+    // zoomIn/zoomOut
+    var worldScale = 1,
+        viewRect, boundsPoint;
 
     BasicGame.Boot.prototype = {
         preload: function(){
@@ -23,6 +29,14 @@ Page.Init = function() {
             game.physics.startSystem(Phaser.Physics.P2JS);
         },
         create: function(){
+            boundsPoint = new Phaser.Point(0, 0);
+            // reusable rect view rectangle
+            viewRect = new Phaser.Rectangle(0, 0, game.width, game.height);
+
+            // camera in the middle of the game
+            game.camera.x = (game.width * -0.5);
+            game.camera.y = (game.height * -0.5);
+
             // create group of tiles
             isoGroup = game.add.group();
 
@@ -32,7 +46,7 @@ Page.Init = function() {
             // 3d position for the cursor
             cursorPos = new Phaser.Plugin.Isometric.Point3();
 
-            // keyboard keys
+            // keyboard keys (arrows)
             cursors = game.input.keyboard.createCursorKeys();
         },
         update: function(){
@@ -49,9 +63,20 @@ Page.Init = function() {
                 game.camera.x += 10;
             }
 
-            // update the cursor position. it's important to understand that screen-to-isometric projection means you have to
-            // specify a z position manually, as this cannot be easily determined from the 2D pointer position without extra
-            // trickery. by default, the z position is 0 if not set.
+            // zoom
+            if (game.input.keyboard.isDown(Phaser.Keyboard.O)) {
+                worldScale += 0.05;
+            } else if (game.input.keyboard.isDown(Phaser.Keyboard.L)) {
+                worldScale -= 0.05;
+            }
+
+            // minimum (0.25) and maximum (2) scale value for the zoom
+            worldScale = Phaser.Math.clamp(worldScale, 0.25, 2);
+
+            // set the zoom!
+            game.world.scale.set(worldScale);
+
+            // update the cursor position.
             game.iso.unproject(game.input.activePointer.position, cursorPos);
 
             // loop through all the tiles to see if the cursor is hover
@@ -71,8 +96,9 @@ Page.Init = function() {
             });
         },
         render: function(){
-            game.debug.text("camera x: " + game.camera.x || "--", 2, 36, "#fff");
             game.debug.text("fps: " + game.time.fps || "--", 2, 14, "#fff");
+            game.debug.text("camera x: " + game.camera.x || "--", 2, 36, "#fff");
+            game.debug.text("camera y: " + game.camera.y || "--", 2, 58, "#fff");
         },
         spawnTiles: function(){
             var tile,
