@@ -71,7 +71,7 @@ Page.Init = function() {
             }
 
             // minimum (0.25) and maximum (2) scale value for the zoom
-            worldScale = Phaser.Math.clamp(worldScale, 0.25, 2);
+            worldScale = Phaser.Math.clamp(worldScale, 1, 2);
 
             // set the zoom!
             game.world.scale.set(worldScale);
