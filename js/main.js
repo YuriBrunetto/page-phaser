@@ -25,7 +25,7 @@ Page.Init = function() {
             game.plugins.add(new Phaser.Plugin.Isometric(game));
             game.iso.anchor.setTo(0.5, 0.1);
 
-            game.world.setBounds(0, 0, 1024, 600);
+            game.world.setBounds(0, 0, 600, 600);
             game.physics.startSystem(Phaser.Physics.P2JS);
         },
         create: function(){
@@ -50,6 +50,23 @@ Page.Init = function() {
             cursors = game.input.keyboard.createCursorKeys();
         },
         update: function(){
+            // update the cursor position.
+            // game.iso.unproject(game.input.activePointer.position, cursorPos);
+            //
+            // // loop through all the tiles to see if the cursor is hover
+            // isoGroup.forEach(function(tile){
+            //     var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
+            //
+            //     // if it does, animate it!
+            //     if (!tile.selected && inBounds) {
+            //         tile.selected = true;
+            //         tile.tint = 0x86bfda; // color
+            //     } else if (tile.selected && !inBounds) {
+            //         tile.selected = false;
+            //         tile.tint = 0xffffff;
+            //     }
+            // });
+
             // move the camera
             if (cursors.down.isDown || game.input.keyboard.isDown(Phaser.Keyboard.S)) {
                 game.camera.y += 10;
@@ -75,25 +92,6 @@ Page.Init = function() {
 
             // set the zoom!
             game.world.scale.set(worldScale);
-
-            // update the cursor position.
-            game.iso.unproject(game.input.activePointer.position, cursorPos);
-
-            // loop through all the tiles to see if the cursor is hover
-            isoGroup.forEach(function(tile){
-                var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
-
-                // if it does, animate it!
-                if (!tile.selected && inBounds) {
-                    tile.selected = true;
-                    tile.tint = 0x86bfda; // color
-                    // game.add.tween(tile).to({ isoZ:8 }, 200, Phaser.Easing.Quadratic.InOut, true);
-                } else if (tile.selected && !inBounds) {
-                    tile.selected = false;
-                    tile.tint = 0xffffff;
-                    // game.add.tween(tile).to({ isoZ:0 }, 200, Phaser.Easing.Quadratic.InOut, true);
-                }
-            });
         },
         render: function(){
             game.debug.text("fps: " + game.time.fps || "--", 2, 14, "#fff");
