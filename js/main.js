@@ -50,23 +50,6 @@ Page.Init = function() {
             cursors = game.input.keyboard.createCursorKeys();
         },
         update: function(){
-            // update the cursor position.
-            game.iso.unproject(game.input.activePointer.position, cursorPos);
-
-            // loop through all the tiles to see if the cursor is hover
-            isoGroup.forEach(function(tile){
-                var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
-
-                // if it does, animate it!
-                if (!tile.selected && inBounds) {
-                    tile.selected = true;
-                    tile.tint = 0x86bfda; // color
-                } else if (tile.selected && !inBounds) {
-                    tile.selected = false;
-                    tile.tint = 0xffffff;
-                }
-            });
-
             // move the camera
             if (cursors.down.isDown || game.input.keyboard.isDown(Phaser.Keyboard.S)) {
                 game.camera.y += 10;
@@ -92,6 +75,23 @@ Page.Init = function() {
 
             // set the zoom!
             game.world.scale.set(worldScale);
+
+            // update the cursor position.
+            game.iso.unproject(game.input.activePointer.position, cursorPos);
+
+            // loop through all the tiles to see if the cursor is hover
+            isoGroup.forEach(function(tile){
+                var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
+
+                // if it does, animate it!
+                if (!tile.selected && inBounds) {
+                    tile.selected = true;
+                    tile.tint = 0x86bfda; // color
+                } else if (tile.selected && !inBounds) {
+                    tile.selected = false;
+                    tile.tint = 0xffffff;
+                }
+            });
         },
         render: function(){
             game.debug.text("fps: " + game.time.fps || "--", 2, 14, "#fff");
