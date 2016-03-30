@@ -77,7 +77,15 @@ Page.Init = function() {
             game.world.scale.set(worldScale);
 
             // update the cursor position.
-            game.iso.unproject(game.input.activePointer.position, cursorPos);
+            // game.iso.unproject({
+            //     x: game.input.activePointer.position.x / game.camera.scale.x,
+            //     y: game.input.activePointer.position.y / game.camera.scale.y
+            // }, cursorPos);
+
+            this.game.iso.unproject({
+                x: (this.game.input.activePointer.position.x + this.game.camera.x) / this.game.camera.scale.x,
+                y: (this.game.input.activePointer.position.y + this.game.camera.y) / this.game.camera.scale.y
+            }, cursorPos);
 
             // loop through all the tiles to see if the cursor is hover
             isoGroup.forEach(function(tile){
