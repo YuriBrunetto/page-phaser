@@ -63,11 +63,11 @@ Page.Init = function() {
                 game.camera.x += 10;
             }
 
-            // zoom
-            if (game.input.keyboard.isDown(Phaser.Keyboard.O)) {
-                worldScale += 0.05;
-            } else if (game.input.keyboard.isDown(Phaser.Keyboard.L)) {
-                worldScale -= 0.05;
+            // zoom using the mouse wheel! <3
+            game.input.mouse.mouseWheelCallback = mouseWheel;
+            function mouseWheel(event) {
+                if (game.input.mouse.wheelDelta == -1) worldScale += 0.05;
+                else if (game.input.mouse.wheelDelta == 1) worldScale -= 0.05;
             }
 
             // minimum (0.25) and maximum (2) scale value for the zoom
@@ -76,12 +76,7 @@ Page.Init = function() {
             // set the zoom!
             game.world.scale.set(worldScale);
 
-            // update the cursor position.
-            // game.iso.unproject({
-            //     x: game.input.activePointer.position.x / game.camera.scale.x,
-            //     y: game.input.activePointer.position.y / game.camera.scale.y
-            // }, cursorPos);
-
+            // update the cursor position
             this.game.iso.unproject({
                 x: (this.game.input.activePointer.position.x + this.game.camera.x) / this.game.camera.scale.x,
                 y: (this.game.input.activePointer.position.y + this.game.camera.y) / this.game.camera.scale.y
