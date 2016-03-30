@@ -25,7 +25,7 @@ Page.Init = function() {
             game.plugins.add(new Phaser.Plugin.Isometric(game));
             game.iso.anchor.setTo(0.5, 0.1);
 
-            game.world.setBounds(0, 0, 600, 600);
+            game.world.setBounds(0, 0, 1024, 600);
             game.physics.startSystem(Phaser.Physics.P2JS);
         },
         create: function(){
@@ -58,13 +58,13 @@ Page.Init = function() {
                 var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
 
                 // if it does, animate it!
-                // if (!tile.selected && inBounds) {
-                //     tile.selected = true;
-                //     tile.tint = 0x86bfda; // color
-                // } else if (tile.selected && !inBounds) {
-                //     tile.selected = false;
-                //     tile.tint = 0xffffff;
-                // }
+                if (!tile.selected && inBounds) {
+                    tile.selected = true;
+                    tile.tint = 0x86bfda; // color
+                } else if (tile.selected && !inBounds) {
+                    tile.selected = false;
+                    tile.tint = 0xffffff;
+                }
             });
 
             // move the camera
