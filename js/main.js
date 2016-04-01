@@ -90,9 +90,22 @@ Page.Init = function() {
                 if (!tile.selected && inBounds) {
                     tile.selected = true;
                     tile.tint = 0x86bfda; // color
+                    game.input.onDown.add(function(){
+                        var zz;
+                        // checks if tile is already up and updates the isoZ value
+                        if (tile.isoZ !== 10) zz = 10;
+                        else                  zz = 0;
+
+                        // animate with the defined isoZ value
+                        game.add.tween(tile).to({ isoZ: zz }, 100, Phaser.Easing.Quadratic.InOut, true);
+                    }, this);
+
                 } else if (tile.selected && !inBounds) {
                     tile.selected = false;
                     tile.tint = 0xffffff;
+                    game.input.onDown.add(function(){
+                        game.add.tween(tile).to({ isoZ: 0 }, 100, Phaser.Easing.Quadratic.InOut, true);
+                    }, this);
                 }
             });
         },
