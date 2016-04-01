@@ -29,6 +29,8 @@ Page.Init = function() {
             game.physics.startSystem(Phaser.Physics.P2JS);
         },
         create: function(){
+            game.canvas.oncontextmenu = function(e) { e.preventDefault(); }
+
             boundsPoint = new Phaser.Point(0, 0);
             // reusable rect view rectangle
             viewRect = new Phaser.Rectangle(0, 0, game.width, game.height);
@@ -82,6 +84,19 @@ Page.Init = function() {
                 y: (this.game.input.activePointer.position.y + this.game.camera.y) / this.game.camera.scale.y
             }, cursorPos);
 
+            // click and drag to move the camera
+            var active;
+            if (this.game.input.activePointer.isDown) {
+                if (this.game.origDragPoint) {
+                    this.game.camera.x += this.game.origDragPoint.x - this.game.input.activePointer.position.x;
+                    this.game.camera.y += this.game.origDragPoint.y - this.game.input.activePointer.position.y;
+                }
+                // set new drag origin to current position
+                this.game.origDragPoint = this.game.input.activePointer.position.clone();
+            } else {
+                this.game.origDragPoint = null;
+            }
+
             // loop through all the tiles to see if the cursor is hover
             isoGroup.forEach(function(tile){
                 var inBounds = tile.isoBounds.containsXY(cursorPos.x, cursorPos.y);
@@ -90,6 +105,7 @@ Page.Init = function() {
                 if (!tile.selected && inBounds) {
                     tile.selected = true;
                     tile.tint = 0x86bfda; // color
+                    // click
                     game.input.onDown.add(function(){
                         var zz;
                         // checks if tile is already up and updates the isoZ value
