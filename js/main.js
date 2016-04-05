@@ -18,7 +18,7 @@ Page.Init = function() {
 
     BasicGame.Boot.prototype = {
         preload: function(){
-            game.load.spritesheet("tile", "assets/tiles/tiles.png", 128, 128, 18);
+            game.load.spritesheet("tile", "assets/tiles/tile.png", 128, 74, 1);
             game.time.advancedTiming = true;
 
             // add the isometric plugin
@@ -68,8 +68,8 @@ Page.Init = function() {
             // zoom using the mouse wheel! <3
             game.input.mouse.mouseWheelCallback = mouseWheel;
             function mouseWheel(event) {
-                if (game.input.mouse.wheelDelta == -1) worldScale += 0.05;
-                else if (game.input.mouse.wheelDelta == 1) worldScale -= 0.05;
+                if (game.input.mouse.wheelDelta == -1) worldScale += 0.03;
+                else if (game.input.mouse.wheelDelta == 1) worldScale -= 0.03;
             }
 
             // minimum (0.25) and maximum (2) scale value for the zoom
