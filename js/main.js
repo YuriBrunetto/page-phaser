@@ -126,9 +126,9 @@ Page.Init = function() {
             });
         },
         render: function(){
-            game.debug.text("fps: " + game.time.fps || "--", 2, 14, "#fff");
-            game.debug.text("camera x: " + game.camera.x || "--", 2, 36, "#fff");
-            game.debug.text("camera y: " + game.camera.y || "--", 2, 58, "#fff");
+            game.debug.text("fps: " + game.time.fps || "--", 2, 14, "#999");
+            game.debug.text("camera x: " + game.camera.x || "--", 2, 36, "#999");
+            game.debug.text("camera y: " + game.camera.y || "--", 2, 58, "#999");
         },
         spawnTiles: function(){
             var tile,
